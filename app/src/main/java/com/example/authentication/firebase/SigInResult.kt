@@ -1,7 +1,7 @@
-package com.example.authentication.view
+package com.example.authentication.firebase
 
 data class SigInResult(
-    val data: com.example.authentication.view.UserData,
+    val data:UserData?,
     val errorMessage:String?
 )
 data class UserData(

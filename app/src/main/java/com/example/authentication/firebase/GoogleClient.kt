@@ -1,12 +1,12 @@
-package com.example.authentication.view
+package com.example.authentication.firebase
 
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import com.example.authentication.R
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
-import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.auth.api.identity.BeginSignInRequest.GoogleIdTokenRequestOptions
+import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -39,26 +39,20 @@ class GoogleClient(
         val credential = oneTapClient.getSignInCredentialFromIntent(intent)
         val googleIdToken = credential.googleIdToken
         val googleCredentials = GoogleAuthProvider.getCredential(googleIdToken, null)
-
         return try {
             val user = auth.signInWithCredential(googleCredentials).await().user
             SignInResult(
                 data = user?.let {
-                    it.photoUrl?.toString()?.let { it1 ->
-                        it.displayName?.let { it2 ->
-                            UserData(
-                                userId = it.uid,
-                                username = it2,
-                                profileUrl = it1
-                            )
-                        }
-                    }
+                    UserData(
+                        userId = it.uid,
+                        username = it.displayName ?: "",
+                        profileUrl = it.photoUrl?.toString() ?: ""
+                    )
                 },
                 errorMessage = null
             )
         } catch (e: Exception) {
             e.printStackTrace()
-            if (e is CancellationException) throw e
             SignInResult(null, e.localizedMessage)
         }
     }
@@ -76,3 +70,4 @@ class GoogleClient(
             .build()
     }
 }
+

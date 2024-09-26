@@ -29,7 +29,6 @@
             android:name="com.google.android.gms.games.APP_ID"
             android:value="@string/app_id" /> <!-- Your Firebase App ID -->
     </application>
-
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 </manifest>
